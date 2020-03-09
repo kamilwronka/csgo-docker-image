@@ -14,27 +14,27 @@ ENV STEAMAPPDIR /home/steam/csgo-dedicated
 RUN set -x \
 	&& apt-get update \
 	&& apt-get install -y --no-install-recommends --no-install-suggests \
-		wget=1.20.1-1.1 \
-		ca-certificates=20190110 \
+	wget=1.20.1-1.1 \
+	ca-certificates=20190110 \
 	&& mkdir -p ${STEAMAPPDIR}/csgo \
 	&& cd ${STEAMAPPDIR} \
 	&& wget https://raw.githubusercontent.com/CM2Walki/CSGO/master/etc/entry.sh \
 	&& chmod 755 ${STEAMAPPDIR}/entry.sh \
 	&& cd ${STEAMAPPDIR}/csgo \
 	&& { \
-			echo '@ShutdownOnFailedCommand 1'; \
-			echo '@NoPromptForPassword 1'; \
-			echo 'login anonymous'; \
-			echo 'force_install_dir ${STEAMAPPDIR}'; \
-			echo 'app_update ${STEAMAPPID}'; \
-			echo 'quit'; \
-		} > ${STEAMAPPDIR}/csgo_update.txt \
+	echo '@ShutdownOnFailedCommand 1'; \
+	echo '@NoPromptForPassword 1'; \
+	echo 'login anonymous'; \
+	echo 'force_install_dir ${STEAMAPPDIR}'; \
+	echo 'app_update ${STEAMAPPID}'; \
+	echo 'quit'; \
+	} > ${STEAMAPPDIR}/csgo_update.txt \
 	&& wget -qO- https://raw.githubusercontent.com/CM2Walki/CSGO/master/etc/cfg.tar.gz | tar xvzf - \
 	&& wget -qO- https://mms.alliedmods.net/mmsdrop/1.10/mmsource-1.10.7-git971-linux.tar.gz | tar xvzf - \
 	&& wget -qO- https://sm.alliedmods.net/smdrop/1.10/sourcemod-1.10.0-git6454-linux.tar.gz | tar xvzf - \
 	&& chown -R steam:steam ${STEAMAPPDIR} \
 	&& apt-get remove --purge -y \
-		wget \
+	wget \
 	&& apt-get clean autoclean \
 	&& apt-get autoremove -y \
 	&& rm -rf /var/lib/apt/lists/*
@@ -59,6 +59,8 @@ USER steam
 WORKDIR $STEAMAPPDIR
 
 VOLUME $STEAMAPPDIR
+
+RUN ${STEAMAPPDIR}/install.sh
 
 ENTRYPOINT ${STEAMAPPDIR}/entry.sh
 
