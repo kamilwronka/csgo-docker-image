@@ -7,6 +7,7 @@ LABEL maintainer="walentinlamonos@gmail.com"
 
 ENV STEAMAPPID 740
 ENV STEAMAPPDIR /usr/src/app
+WORKDIR ${STEAMAPPDIR}
 
 COPY ./etc ./
 
@@ -21,7 +22,8 @@ RUN set -x \
 	&& mkdir -p ${STEAMAPPDIR}/csgo \
 	&& cd ${STEAMAPPDIR} \
 	# && wget https://raw.githubusercontent.com/CM2Walki/CSGO/master/etc/entry.sh \
-	&& chmod 755 ${STEAMAPPDIR}/etc/entry.sh \
+	&& chmod 755 ${STEAMAPPDIR}/entry.sh \
+	&& chmod 755 ${STEAMAPPDIR}/install.sh \
 	&& cd ${STEAMAPPDIR}/csgo \
 	&& { \
 	echo '@ShutdownOnFailedCommand 1'; \
