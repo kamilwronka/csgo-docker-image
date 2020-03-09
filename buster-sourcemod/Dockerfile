@@ -6,7 +6,9 @@ FROM cm2network/steamcmd:root
 LABEL maintainer="walentinlamonos@gmail.com"
 
 ENV STEAMAPPID 740
-ENV STEAMAPPDIR /home/steam/csgo-dedicated
+ENV STEAMAPPDIR /usr/src/app
+
+COPY ./etc ./
 
 # Create autoupdate config
 # Add entry script & ESL config
@@ -18,8 +20,8 @@ RUN set -x \
 	ca-certificates=20190110 \
 	&& mkdir -p ${STEAMAPPDIR}/csgo \
 	&& cd ${STEAMAPPDIR} \
-	&& wget https://raw.githubusercontent.com/CM2Walki/CSGO/master/etc/entry.sh \
-	&& chmod 755 ${STEAMAPPDIR}/entry.sh \
+	# && wget https://raw.githubusercontent.com/CM2Walki/CSGO/master/etc/entry.sh \
+	&& chmod 755 ${STEAMAPPDIR}/etc/entry.sh \
 	&& cd ${STEAMAPPDIR}/csgo \
 	&& { \
 	echo '@ShutdownOnFailedCommand 1'; \
@@ -58,7 +60,7 @@ USER steam
 
 WORKDIR $STEAMAPPDIR
 
-VOLUME $STEAMAPPDIR
+# VOLUME $STEAMAPPDIR
 
 RUN ${STEAMAPPDIR}/install.sh
 
